@@ -1,0 +1,148 @@
+<!DOCTYPE HTML>
+<!--
+	Spatial by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html>
+	<head>
+    <title>WEBDEV</title>
+		<link rel="shortcut icon" href="images/favicon.ico" >
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<!--[if lte IE 8]><script src="js/html5shiv.js"></script><![endif]-->
+		<script src="js/jquery.min.js"></script>
+    <script src="js/custom.js"></script>
+		<script src="js/skel.min.js"></script>
+		<script src="js/skel-layers.min.js"></script>
+		<script src="js/init.js"></script>
+		<noscript>
+			<link rel="stylesheet" href="css/skel.css" />
+			<link rel="stylesheet" href="css/style.css" />
+			<link rel="stylesheet" href="css/style-xlarge.css" />
+		</noscript>
+    <link rel="stylesheet" href="css/custom_style.css" />
+	</head>
+	<body>
+
+		<!-- Header -->
+			<header id="header">
+        <h1><strong><a href="index.html">LF</a></strong> WebDev</h1>
+				<nav id="nav">
+					<ul>
+            <li><a href="index.html">Início</a></li>
+						<li><a href="portifolio.html">Projetos</a></li>
+						<li><a href="contact.html">Contato</a></li>
+					</ul>
+				</nav>
+			</header>
+
+		<!-- Main -->
+			<section id="main" class="wrapper">
+				<div class="container">
+					<header class="major special">
+						<h2>Contato</h2>
+					</header>
+
+					<!-- Form -->
+						<section>
+							<form method="post">
+								<div class="row uniform 50%">
+									<div class="6u 12u$(xsmall)">
+										<input type="text" name="name" id="name" value="" placeholder="Nome" required />
+									</div>
+									<div class="6u$ 12u$(xsmall)">
+										<input type="email" name="email" id="email" value="" placeholder="Email" required/>
+									</div>
+									<div class="12u$">
+										<div class="select-wrapper">
+											<select name="category" id="category">
+												<option value="">- Categoria -</option>
+												<option value="1">Orçamento</option>
+												<option value="2">Dúvidas</option>
+												<option value="3">Outros</option>
+											</select>
+										</div>
+									</div>
+									<div class="6u 12u$(small)">
+										<input type="checkbox" id="copy" name="copy">
+										<label for="copy">Envie-me uma cópia deste email</label>
+									</div>
+									<div class="12u$">
+										<textarea name="message" id="message" placeholder="Digite sua mensagem..." rows="6"></textarea>
+									</div>
+									<div class="12u$">
+										<ul class="actions">
+											<li><input type="submit" value="Enviar" class="special enviar_email" /></li>
+											<li><input type="reset" value="Cancelar" /></li>
+										</ul>
+										<div class="debug">
+										</div>
+									</div>
+								</div>
+							</form>
+						</section>
+				</div>
+			</section>
+
+			<!-- Footer -->
+				<footer id="footer">
+					<div class="container">
+						<ul class="icons">
+							<li><a href="#" class="icon fa-github"></a></li>
+							<li><a href="#" class="icon fa-codepen"></a></li>
+							<li><a href="#" class="icon fa-facebook"></a></li>
+						</ul>
+						<ul class="copyright">
+							<li>&copy; LF WEBDEV</li>
+						</ul>
+					</div>
+				</footer>
+
+				<script>
+
+				$('.enviar_email').on('click',function(){
+				  $(".debug").empty();
+				  $('.debug').append("<div class='carregando' align='center'><i class='fa fa-spinner fa-pulse fa-2x'></i></div>");
+				  $.ajax({
+				  type: "POST",
+				  url: "https://mandrillapp.com/api/1.0/messages/send.json",
+				  data: {
+				    'key': 'GP4335rENNSpRNrFy062Fw',
+				    'message': {
+				      'from_email': $("#email").val(),
+				      'to': [
+				          {
+				            'email': 'lucianopf@outlook.com',
+				            'name': 'LucianoPF',
+				            'type': 'to'
+				          }
+				        ],
+				      'autotext': 'true',
+				      'subject':  $("#name").val() + " - " + $("#category option:selected").text(),
+				      'html': $("#message").val()
+				    }
+				  }
+				 }).done(function(response) {
+					 if(response[0].status != "rejected"){
+						 $(".debug").empty();
+					   $(".debug").append("<h4 align='center'>MENSAGEM ENVIADA COM SUCESSO<h4>");
+					   $("#email").val("");
+					   $("#name").val("");
+					   $("#message").val("");
+					 }else{
+						$(".debug").empty();
+						$(".debug").append("<h4 align='center'>ERRO AO ENVIAR MENSAGEM<h4>");
+						$("#email").val("");
+						$("#name").val("");
+						$("#message").val("");
+					 }
+				 });
+				 return false;
+				});
+				</script>
+
+
+		</body>
+		</html>
