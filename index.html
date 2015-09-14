@@ -25,21 +25,57 @@
 		  _castle('trackPageview');
 		</script>
 		<script type="text/javascript">
-		  _castle('identify', '1234', {  // 1234 is this user's id in your database
-		    name: 'Jane Doe', // optional
-		    email: 'jane@doe.io' // optional
-		  });
-		</script>
-	</head>
-	<body class="landing">
-			<header id="header" class="alt">
-				<h1><strong><a href="index.html">LF</a></strong> WebDev</h1>
-				<nav id="nav">
-					<ul>
-						<li><a href="index.html">Início</a></li>
-						<li><a href="portifolio.html">Projetos</a></li>
-						<li><a href="contact.html">Contato</a></li>
-					</ul>
+		  //_castle('identify', '1234', {  // 1234 is this user's id in your database
+		  //  name: 'Jane Doe', // optional
+		  //  email: 'jane@doe.io' // optional
+		  //});
+		  
+			function setCookie(variavel, valor) {
+			    document.cookie = variavel + "=" + valor;
+			}
+			
+			function getCookie(cname) {
+			    var name = cname + "=";
+			    var ca = document.cookie.split(';');
+			    for(var i=0; i<ca.length; i++) {
+			        var c = ca[i];
+			        while (c.charAt(0)==' ') c = c.substring(1);
+			        if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+			    }
+			    return "";
+			}
+			
+			function checkCookie(campo) {
+			    var variavel = getCookie(campo);
+			    if (variavel != "") {
+			        _castle('identify', variavel);
+			    } else {
+			    	// Pega o ip do usuario
+					$.get("http://ipinfo.io", function(response) {
+					    var ip = response.ip;
+					    var agora = Date.now();
+					    ip =  ip.replace(".","");
+					    ip =  ip.replace(".","");
+					    ip =  ip.replace(".","");
+					    ip =  ip.replace(".","");
+					    var identificador = ip*agora;
+				        setCookie(campo, identificador);
+				        _castle('identify', identificador);
+					}, "jsonp");
+			    }
+			}
+			checkCookie('lfwebdev-id');
+			</script>
+		</head>
+		<body class="landing">
+				<header id="header" class="alt">
+					<h1><strong><a href="index.html">LF</a></strong> WebDev</h1>
+					<nav id="nav">
+						<ul>
+							<li><a href="index.html">Início</a></li>
+							<li><a href="portifolio.html">Projetos</a></li>
+							<li><a href="contact.html">Contato</a></li>
+						</ul>
 				</nav>
 			</header>
 			<section id="banner">
